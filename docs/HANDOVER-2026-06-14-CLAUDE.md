@@ -24,17 +24,23 @@ from inside the app, so the published URLs must remain stable.
 
 ## Key facts
 
-- **Support / contact email:** `165699@skane.se` (used in the privacy policy,
-  terms of use, and support page). Keep this consistent across all files if it
-  ever changes.
-- **Last legal update:** 2026-05-17. Bump the `Last updated:` line in
+- **Provider / data controller:** Helsing Medic AB, Klyvarevägen 4,
+  Helsingborg, Sweden.
+- **Support / contact email:** `support@scannrfast.se` (used in the privacy
+  policy, terms of use, and support page). Keep this consistent across all
+  files if it ever changes.
+- **Last legal update:** 2026-06-14. Bump the `Last updated:` line in
   `PRIVACY_POLICY.md` and `TERMS_OF_USE.md` whenever their content changes.
+- **Publishing:** GitHub Pages, canonical site
+  `https://pikkemaat.github.io/scannrexpense-legal/`. Pages must be enabled in
+  repo Settings → Pages (Source: deploy from branch `main`, root). Canonical
+  privacy URL: `.../PRIVACY_POLICY.html`.
 - **Platform specifics:** Data is stored on-device and synced via the user's
   personal iCloud account (Apple-provided). Subscriptions are auto-renewable
   in-app purchases handled by Apple/StoreKit. No advertising tracking; no sale
   of personal data.
-- These pages are plain Markdown with no build step, CI, or tooling. They are
-  intended to render directly (e.g. via GitHub Pages or raw Markdown viewing).
+- These pages are plain Markdown rendered by GitHub Pages (default Jekyll, no
+  custom build step or CI). They also render directly on github.com.
 
 ## Conventions for future edits
 
@@ -55,7 +61,11 @@ from inside the app, so the published URLs must remain stable.
 
 ## Suggested next steps (if continuing)
 
-- Confirm whether these pages are published via GitHub Pages and verify the
-  live URLs match what the App Store listing and app reference.
-- Consider adding a short "Account & data deletion" section to the privacy
-  policy if Apple guidelines require an explicit data-deletion statement.
+- Enable GitHub Pages in repo Settings → Pages once this branch is merged, then
+  verify the live URLs (`https://pikkemaat.github.io/scannrexpense-legal/` and
+  `.../PRIVACY_POLICY.html`) resolve and match the App Store listing / in-app
+  links.
+- Add a postal code to the data-controller address in `PRIVACY_POLICY.md` /
+  `TERMS_OF_USE.md` if a fully formatted address is required.
+- Have the GDPR and Terms wording reviewed by a qualified advisor before App
+  Store submission; the current text is a reasonable baseline, not legal advice.
