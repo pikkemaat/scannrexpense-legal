@@ -1,6 +1,6 @@
 # ScannrExpense Support
 
-For help with ScannrExpense, contact: 165699@skane.se
+For help with ScannrExpense, contact: support@scannrfast.se
 
 Please include:
 
