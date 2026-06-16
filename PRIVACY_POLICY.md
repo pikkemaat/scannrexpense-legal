@@ -1,3 +1,7 @@
+---
+title: Privacy Policy
+---
+
 # Privacy Policy for ScannrExpense
 
 Last updated: 2026-06-14

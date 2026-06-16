@@ -1,3 +1,7 @@
+---
+title: Terms of Use
+---
+
 # Terms of Use for ScannrExpense
 
 Last updated: 2026-06-14
