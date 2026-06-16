@@ -1,3 +1,7 @@
+---
+title: Support
+---
+
 # ScannrExpense Support
 
 For help with ScannrExpense, contact: support@scannrfast.se

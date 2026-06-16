@@ -1,0 +1,8 @@
+title: ScannrExpense Legal & Support
+description: Public legal and support pages for the ScannrExpense iOS app.
+theme: jekyll-theme-minimal
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
