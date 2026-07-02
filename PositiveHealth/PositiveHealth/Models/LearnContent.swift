@@ -117,6 +117,51 @@ enum LearnContent {
     to health-oriented care.
     """
 
+    // MARK: The movement & the value it aims for
+
+    static let movement = """
+    Positive Health is not only a tool but a movement — a different way of \
+    thinking, doing, organising and financing care. It usually starts with a \
+    few committed people and local partners who share a vision, and grows into \
+    broader coalitions. The way it is implemented differs per country and \
+    culture, but the core vision stays the same. It has taken root across many \
+    domains in the Netherlands over the past decade and is now spreading \
+    internationally.
+
+    At its heart is a shift away from "the repair reflex" — the automatic urge \
+    to fix a complaint — towards empowering people to recognise what they \
+    themselves can do to live a purposeful, meaningful life.
+    """
+
+    static let value = """
+    In care, Positive Health aims at what is known as the "Quadruple Aim":
+
+    • Improving the health of the population
+    • Improving people's experience of care
+    • Reducing costs
+    • Improving the wellbeing of care teams and professionals
+
+    Together these describe a move from disease-oriented care to \
+    health-oriented care — care that starts from what matters to a person, not \
+    only from what is wrong with them.
+    """
+
+    // MARK: Official resources
+
+    static let resources = """
+    Beyond the spider web, Positive Health International and the institute for \
+    Positive Health (iPH) offer more ways to go deeper:
+
+    • The online spider web at mypositivehealth.com, for filling it in digitally.
+    • An e-learning module, "The Essence of Positive Health", as an introduction.
+    • A handbook with comprehensive guidance.
+    • Free downloads and materials for people and professionals.
+
+    This app is an independent personal companion that lets you fill in the \
+    official spider web on your device; the resources above are the source and \
+    the place to learn more.
+    """
+
     // MARK: Source & disclaimer
 
     static let sourceNote = """

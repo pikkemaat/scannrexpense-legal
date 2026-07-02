@@ -70,6 +70,21 @@ struct AboutView: View {
                         .font(.subheadline)
                 }
 
+                Section("A movement, not just a tool") {
+                    Text(LearnContent.movement)
+                        .font(.subheadline)
+                }
+
+                Section("The value it aims for") {
+                    Text(LearnContent.value)
+                        .font(.subheadline)
+                }
+
+                Section("More resources") {
+                    Text(LearnContent.resources)
+                        .font(.subheadline)
+                }
+
                 Section("Versions in this app") {
                     ForEach(ToolVersion.allCases) { version in
                         VStack(alignment: .leading, spacing: 2) {
