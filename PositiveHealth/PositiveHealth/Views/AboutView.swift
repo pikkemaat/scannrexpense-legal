@@ -7,22 +7,53 @@ struct AboutView: View {
         NavigationStack {
             List {
                 Section("What is Positive Health?") {
-                    Text("Positive Health is a broad view of health, developed in the Netherlands from research by Machteld Huber. Instead of asking what is the matter with you, it asks what matters to you. From interviews about what health means to people, around 500 indicators were grouped into six main dimensions — together they form the spider web.")
+                    Text(LearnContent.whatIsIt)
+                        .font(.subheadline)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("“\(LearnContent.huberQuote)”")
+                            .font(.subheadline.italic())
+                        Text("— \(LearnContent.huberQuoteAuthor)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 2)
+                }
+
+                Section("Where does it come from?") {
+                    Text(LearnContent.origin)
                         .font(.subheadline)
                 }
 
                 Section("The six dimensions") {
                     ForEach(ToolVersion.adult.dimensions) { dimension in
-                        HStack(spacing: 12) {
+                        HStack(alignment: .top, spacing: 12) {
                             Image(systemName: dimension.symbolName)
                                 .font(.subheadline)
                                 .foregroundStyle(.white)
                                 .frame(width: 30, height: 30)
                                 .background(dimension.color, in: Circle())
-                            Text(dimension.name)
-                                .font(.subheadline)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(dimension.name)
+                                    .font(.subheadline.weight(.medium))
+                                if let explanation = LearnContent.explanation(for: dimension) {
+                                    Text(explanation)
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
                         }
+                        .padding(.vertical, 2)
                     }
+                }
+
+                Section("The spider web") {
+                    Text(LearnContent.spiderWeb)
+                        .font(.subheadline)
+                }
+
+                Section("The other conversation") {
+                    Text(LearnContent.otherConversation)
+                        .font(.subheadline)
                 }
 
                 Section("How it works — three steps") {
@@ -34,7 +65,12 @@ struct AboutView: View {
                          text: "Choose one small step you can take yourself, and think about who or what could support you. When one point of the web moves, other points move too.")
                 }
 
-                Section("Versions") {
+                Section("Who is it for?") {
+                    Text(LearnContent.whoAndWhere)
+                        .font(.subheadline)
+                }
+
+                Section("Versions in this app") {
                     ForEach(ToolVersion.allCases) { version in
                         VStack(alignment: .leading, spacing: 2) {
                             Text("\(version.title) · \(version.ageRange)")
@@ -53,10 +89,13 @@ struct AboutView: View {
                     Link(destination: URL(string: "https://www.iph.nl/en/")!) {
                         Label("Institute for Positive Health (iPH)", systemImage: "globe")
                     }
+                    Link(destination: URL(string: "https://www.mypositivehealth.com/")!) {
+                        Label("My Positive Health — official online spider web", systemImage: "globe")
+                    }
                 } header: {
                     Text("Learn more")
                 } footer: {
-                    Text("The dialogue tool content is © iPH/PHi, reproduced from the official English tools of Positive Health International in collaboration with the institute for Positive Health (iPH). This app is a companion for personal use and is not a medical device; it does not provide diagnoses or medical advice.")
+                    Text(LearnContent.sourceNote)
                 }
             }
             .navigationTitle("About Positive Health")
