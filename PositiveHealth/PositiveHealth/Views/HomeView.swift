@@ -3,10 +3,14 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppSettings.self) private var settings
     @Query(sort: \Assessment.date, order: .reverse) private var assessments: [Assessment]
 
     @State private var newVersion: ToolVersion?
     @State private var showAbout = false
+    @State private var showSettings = false
+
+    private var lang: AppLanguage { settings.language }
 
     var body: some View {
         NavigationStack {
@@ -17,7 +21,7 @@ struct HomeView: View {
                     assessmentList
                 }
             }
-            .navigationTitle("My Positive Health")
+            .navigationTitle(Loc.t("app_title", lang))
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -26,7 +30,12 @@ struct HomeView: View {
                         Image(systemName: "info.circle")
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "globe")
+                    }
                     newAssessmentMenu
                 }
             }
@@ -35,6 +44,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showAbout) {
                 AboutView()
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
         }
     }
@@ -45,19 +57,19 @@ struct HomeView: View {
                 Button {
                     newVersion = version
                 } label: {
-                    Label("\(version.title) (\(version.ageRange))", systemImage: "square.and.pencil")
+                    Label("\(version.title(lang)) (\(version.ageRange(lang)))", systemImage: "square.and.pencil")
                 }
             }
         } label: {
-            Label("Fill in the spider web", systemImage: "plus")
+            Label(Loc.t("fill_menu", lang), systemImage: "plus")
         }
     }
 
     private var emptyState: some View {
         ContentUnavailableView {
-            Label("Fill in your spider web", systemImage: "hexagon")
+            Label(Loc.t("empty_title", lang), systemImage: "hexagon")
         } description: {
-            Text("Positive Health looks at what matters to you, across six dimensions of health. Fill in the spider web to get your personal overview — a starting point for a different conversation.")
+            Text(Loc.t("empty_desc", lang))
         } actions: {
             newAssessmentMenu
                 .buttonStyle(.borderedProminent)
@@ -84,7 +96,7 @@ struct HomeView: View {
                           showLabels: false)
                 .frame(width: 52, height: 52)
             VStack(alignment: .leading, spacing: 2) {
-                Text(assessment.version.title)
+                Text(assessment.version.title(lang))
                     .font(.headline)
                 Text(assessment.date.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption)
@@ -107,5 +119,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environment(AppSettings())
         .modelContainer(for: Assessment.self, inMemory: true)
 }

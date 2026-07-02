@@ -1,30 +1,33 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(AppSettings.self) private var settings
     @Environment(\.dismiss) private var dismiss
+
+    private var lang: AppLanguage { settings.language }
 
     var body: some View {
         NavigationStack {
             List {
-                Section("What is Positive Health?") {
-                    Text(LearnContent.whatIsIt)
+                Section(Loc.t("about.s.whatisit", lang)) {
+                    Text(Loc.t("about.whatisit", lang))
                         .font(.subheadline)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("“\(LearnContent.huberQuote)”")
+                        Text("“\(Loc.t("about.quote", lang))”")
                             .font(.subheadline.italic())
-                        Text("— \(LearnContent.huberQuoteAuthor)")
+                        Text("— \(Loc.t("about.quote_author", lang))")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 2)
                 }
 
-                Section("Where does it come from?") {
-                    Text(LearnContent.origin)
+                Section(Loc.t("about.s.origin", lang)) {
+                    Text(Loc.t("about.origin", lang))
                         .font(.subheadline)
                 }
 
-                Section("The six dimensions") {
+                Section(Loc.t("about.s.dimensions", lang)) {
                     ForEach(ToolVersion.adult.dimensions) { dimension in
                         HStack(alignment: .top, spacing: 12) {
                             Image(systemName: dimension.symbolName)
@@ -33,9 +36,9 @@ struct AboutView: View {
                                 .frame(width: 30, height: 30)
                                 .background(dimension.color, in: Circle())
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(dimension.name)
+                                Text(Loc.name(dimension, lang))
                                     .font(.subheadline.weight(.medium))
-                                if let explanation = LearnContent.explanation(for: dimension) {
+                                if let explanation = Loc.explanation(dimension, lang) {
                                     Text(explanation)
                                         .font(.footnote)
                                         .foregroundStyle(.secondary)
@@ -46,49 +49,46 @@ struct AboutView: View {
                     }
                 }
 
-                Section("The spider web") {
-                    Text(LearnContent.spiderWeb)
+                Section(Loc.t("about.s.spiderweb", lang)) {
+                    Text(Loc.t("about.spiderweb", lang))
                         .font(.subheadline)
                 }
 
-                Section("The other conversation") {
-                    Text(LearnContent.otherConversation)
+                Section(Loc.t("about.s.conversation", lang)) {
+                    Text(Loc.t("about.conversation", lang))
                         .font(.subheadline)
                 }
 
-                Section("How it works — three steps") {
-                    step(number: 1, title: "Fill in the spider web",
-                         text: "Score how you feel about each aspect, from 0 to 10. It only takes a few minutes. There is no norm — it is a personal evaluation of this moment.")
-                    step(number: 2, title: "Have the other conversation",
-                         text: "Use your spider web as a conversation starter — with a doctor, nurse, social worker, coach, or a friend. Not about where scores are low, but about where you want to go and what is important to you.")
-                    step(number: 3, title: "Take a small step",
-                         text: "Choose one small step you can take yourself, and think about who or what could support you. When one point of the web moves, other points move too.")
+                Section(Loc.t("about.s.steps", lang)) {
+                    step(1, "about.step1.title", "about.step1.text")
+                    step(2, "about.step2.title", "about.step2.text")
+                    step(3, "about.step3.title", "about.step3.text")
                 }
 
-                Section("Who is it for?") {
-                    Text(LearnContent.whoAndWhere)
+                Section(Loc.t("about.s.who", lang)) {
+                    Text(Loc.t("about.who", lang))
                         .font(.subheadline)
                 }
 
-                Section("A movement, not just a tool") {
-                    Text(LearnContent.movement)
+                Section(Loc.t("about.s.movement", lang)) {
+                    Text(Loc.t("about.movement", lang))
                         .font(.subheadline)
                 }
 
-                Section("The value it aims for") {
-                    Text(LearnContent.value)
+                Section(Loc.t("about.s.value", lang)) {
+                    Text(Loc.t("about.value", lang))
                         .font(.subheadline)
                 }
 
-                Section("More resources") {
-                    Text(LearnContent.resources)
+                Section(Loc.t("about.s.resources", lang)) {
+                    Text(Loc.t("about.resources", lang))
                         .font(.subheadline)
                 }
 
-                Section("Versions in this app") {
+                Section(Loc.t("about.s.versions", lang)) {
                     ForEach(ToolVersion.allCases) { version in
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("\(version.title) · \(version.ageRange)")
+                            Text("\(version.title(lang)) · \(version.ageRange(lang))")
                                 .font(.subheadline.weight(.medium))
                             Text(version.toolName)
                                 .font(.caption)
@@ -99,35 +99,35 @@ struct AboutView: View {
 
                 Section {
                     Link(destination: URL(string: "https://positivehealth-international.com/dialogue-tools/")!) {
-                        Label("Positive Health International — dialogue tools", systemImage: "globe")
+                        Label(Loc.t("about.link.phi", lang), systemImage: "globe")
                     }
                     Link(destination: URL(string: "https://www.iph.nl/en/")!) {
-                        Label("Institute for Positive Health (iPH)", systemImage: "globe")
+                        Label(Loc.t("about.link.iph", lang), systemImage: "globe")
                     }
                     Link(destination: URL(string: "https://www.mypositivehealth.com/")!) {
-                        Label("My Positive Health — official online spider web", systemImage: "globe")
+                        Label(Loc.t("about.link.online", lang), systemImage: "globe")
                     }
                 } header: {
-                    Text("Learn more")
+                    Text(Loc.t("about.s.learnmore", lang))
                 } footer: {
-                    Text(LearnContent.sourceNote)
+                    Text(Loc.t("about.source", lang))
                 }
             }
-            .navigationTitle("About Positive Health")
+            .navigationTitle(Loc.t("about.title", lang))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button(Loc.t("done", lang)) { dismiss() }
                 }
             }
         }
     }
 
-    private func step(number: Int, title: String, text: String) -> some View {
+    private func step(_ number: Int, _ titleKey: String, _ textKey: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Label(title, systemImage: "\(number).circle.fill")
+            Label(Loc.t(titleKey, lang), systemImage: "\(number).circle.fill")
                 .font(.subheadline.weight(.semibold))
-            Text(text)
+            Text(Loc.t(textKey, lang))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -137,4 +137,5 @@ struct AboutView: View {
 
 #Preview {
     AboutView()
+        .environment(AppSettings())
 }

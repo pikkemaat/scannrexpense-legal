@@ -9,8 +9,11 @@ struct ResultView: View {
     /// Done button to close the whole questionnaire sheet.
     var onDone: (() -> Void)? = nil
 
+    @Environment(AppSettings.self) private var settings
     @Query(sort: \Assessment.date, order: .reverse) private var allAssessments: [Assessment]
     @State private var compareWithPrevious = false
+
+    private var lang: AppLanguage { settings.language }
 
     private var previousAssessment: Assessment? {
         allAssessments.first {
@@ -32,7 +35,7 @@ struct ResultView: View {
                 if let previous = previousAssessment {
                     Toggle(isOn: $compareWithPrevious.animation()) {
                         VStack(alignment: .leading) {
-                            Text("Compare with previous")
+                            Text(Loc.t("r.compare", lang))
                             Text(previous.date.formatted(date: .abbreviated, time: .omitted))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
@@ -40,49 +43,49 @@ struct ResultView: View {
                     }
                 }
             } header: {
-                Text("\(assessment.version.title) · \(assessment.date.formatted(date: .abbreviated, time: .shortened))")
+                Text("\(assessment.version.title(lang)) · \(assessment.date.formatted(date: .abbreviated, time: .shortened))")
             } footer: {
-                Text("There is no norm and no score to reach. This is your own picture of this moment.")
+                Text(Loc.t("r.no_norm_footer", lang))
             }
 
-            Section("My dimensions") {
+            Section(Loc.t("r.my_dimensions", lang)) {
                 ForEach(assessment.version.dimensions) { dimension in
                     dimensionRow(dimension)
                 }
             }
 
             if !assessment.reflection.isEmpty {
-                Section(assessment.version.reflectionPrompt) {
+                Section(assessment.version.reflectionPrompt(lang)) {
                     Text(assessment.reflection)
                 }
             }
 
             Section {
                 conversationField(
-                    question: PositiveHealthContent.conversationQuestions[0].question,
+                    question: Loc.question(PositiveHealthContent.conversationQuestions[0], lang),
                     text: $assessment.answerAttention
                 )
                 conversationField(
-                    question: PositiveHealthContent.conversationQuestions[1].question,
+                    question: Loc.question(PositiveHealthContent.conversationQuestions[1], lang),
                     text: $assessment.answerStep
                 )
                 conversationField(
-                    question: PositiveHealthContent.conversationQuestions[2].question,
+                    question: Loc.question(PositiveHealthContent.conversationQuestions[2], lang),
                     text: $assessment.answerSupport
                 )
             } header: {
-                Text("The other conversation")
+                Text(Loc.t("r.other_conversation", lang))
             } footer: {
-                Text("It doesn't matter where you start — what matters is that you start, and that you take small steps. When one point moves, other points move too.")
+                Text(Loc.t("r.other_footer", lang))
             }
         }
-        .navigationTitle("My Positive Health")
+        .navigationTitle(Loc.t("app_title", lang))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(onDone != nil)
         .toolbar {
             if let onDone {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { onDone() }
+                    Button(Loc.t("done", lang)) { onDone() }
                 }
             }
         }
@@ -92,7 +95,7 @@ struct ResultView: View {
         DisclosureGroup {
             ForEach(dimension.aspects.filter { assessment.scores[$0.id] != nil }) { aspect in
                 HStack {
-                    Text(aspect.text)
+                    Text(Loc.text(aspect, lang))
                         .font(.subheadline)
                     Spacer()
                     Text("\(Int(assessment.scores[aspect.id] ?? 0))")
@@ -107,7 +110,7 @@ struct ResultView: View {
                     .foregroundStyle(.white)
                     .frame(width: 30, height: 30)
                     .background(dimension.color, in: Circle())
-                Text(dimension.name)
+                Text(Loc.name(dimension, lang))
                     .font(.subheadline.weight(.medium))
                 Spacer()
                 if let average = assessment.average(for: dimension) {
@@ -123,7 +126,7 @@ struct ResultView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(question)
                 .font(.subheadline.weight(.medium))
-            TextField("Your answer…", text: text, axis: .vertical)
+            TextField(Loc.t("r.your_answer", lang), text: text, axis: .vertical)
                 .lineLimit(2...5)
         }
         .padding(.vertical, 4)
@@ -140,5 +143,6 @@ struct ResultView: View {
             reflection: "My friends and my music."
         ))
     }
+    .environment(AppSettings())
     .modelContainer(for: Assessment.self, inMemory: true)
 }

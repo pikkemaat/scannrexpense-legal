@@ -8,6 +8,7 @@ struct SpiderWebView: View {
     var comparisonValues: [Double]? = nil
     var showLabels: Bool = true
 
+    @Environment(AppSettings.self) private var settings
     private let maxValue: Double = 10
 
     var body: some View {
@@ -40,7 +41,7 @@ struct SpiderWebView: View {
                         VStack(spacing: 2) {
                             Image(systemName: dimension.symbolName)
                                 .font(.caption)
-                            Text(dimension.name)
+                            Text(Loc.name(dimension, settings.language))
                                 .font(.caption2.weight(.semibold))
                                 .multilineTextAlignment(.center)
                         }
@@ -131,4 +132,5 @@ struct SpiderWebView: View {
                   values: [7, 5, 6, 8, 4, 6],
                   comparisonValues: [5, 4, 5, 6, 3, 5])
         .padding()
+        .environment(AppSettings())
 }

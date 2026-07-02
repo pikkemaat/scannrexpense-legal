@@ -9,6 +9,7 @@ struct QuestionnaireView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppSettings.self) private var settings
 
     @State private var scores: [String: Double] = [:]
     @State private var reflection: String = ""
@@ -16,6 +17,7 @@ struct QuestionnaireView: View {
     @State private var includeFrom12 = true
     @State private var savedAssessment: Assessment?
 
+    private var lang: AppLanguage { settings.language }
     private var dimensions: [Dimension] { version.dimensions }
     private var lastPage: Int { dimensions.count }
     private var hasFrom12Aspects: Bool {
@@ -40,11 +42,11 @@ struct QuestionnaireView: View {
 
                 navigationButtons
             }
-            .navigationTitle(version.title)
+            .navigationTitle(version.title(lang))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button(Loc.t("cancel", lang)) { dismiss() }
                 }
             }
             .navigationDestination(item: $savedAssessment) { assessment in
@@ -68,17 +70,17 @@ struct QuestionnaireView: View {
                         .frame(width: 44, height: 44)
                         .background(dimension.color, in: Circle())
                     VStack(alignment: .leading) {
-                        Text(dimension.name)
+                        Text(Loc.name(dimension, lang))
                             .font(.title3.bold())
                             .foregroundStyle(dimension.color)
-                        Text("How do you feel about this? There are no right or wrong answers.")
+                        Text(Loc.t("q.how_feel", lang))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
 
                 if version == .child && dimension.id == dimensions.first?.id && hasFrom12Aspects {
-                    Toggle("Include questions for 12 years and older", isOn: $includeFrom12)
+                    Toggle(Loc.t("q.include12", lang), isOn: $includeFrom12)
                         .font(.subheadline)
                         .padding(12)
                         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
@@ -99,7 +101,7 @@ struct QuestionnaireView: View {
         )
         return VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(aspect.text)
+                Text(Loc.text(aspect, lang))
                     .font(.subheadline.weight(.medium))
                 Spacer()
                 Text(emoji(for: binding.wrappedValue))
@@ -118,16 +120,16 @@ struct QuestionnaireView: View {
     private var reflectionPage: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Almost done")
+                Text(Loc.t("q.almost_done", lang))
                     .font(.title3.bold())
-                Text(version.reflectionPrompt)
+                Text(version.reflectionPrompt(lang))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                TextField("Write it down here…", text: $reflection, axis: .vertical)
+                TextField(Loc.t("q.write_here", lang), text: $reflection, axis: .vertical)
                     .lineLimit(4...8)
                     .textFieldStyle(.roundedBorder)
 
-                Text("When you save, your personal overview appears in the spider web. Remember: this is not a test and there is no norm — it is your own picture of this moment, and a starting point for a conversation.")
+                Text(Loc.t("q.save_footer", lang))
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -141,7 +143,7 @@ struct QuestionnaireView: View {
                 Button {
                     withAnimation { pageIndex -= 1 }
                 } label: {
-                    Label("Back", systemImage: "chevron.left")
+                    Label(Loc.t("back", lang), systemImage: "chevron.left")
                 }
                 .buttonStyle(.bordered)
             }
@@ -150,7 +152,7 @@ struct QuestionnaireView: View {
                 Button {
                     withAnimation { pageIndex += 1 }
                 } label: {
-                    Label("Next", systemImage: "chevron.right")
+                    Label(Loc.t("next", lang), systemImage: "chevron.right")
                         .labelStyle(.titleAndIcon)
                 }
                 .buttonStyle(.borderedProminent)
@@ -158,7 +160,7 @@ struct QuestionnaireView: View {
                 Button {
                     save()
                 } label: {
-                    Label("Show my spider web", systemImage: "checkmark")
+                    Label(Loc.t("q.show_web", lang), systemImage: "checkmark")
                 }
                 .buttonStyle(.borderedProminent)
             }
@@ -193,5 +195,6 @@ struct QuestionnaireView: View {
 
 #Preview {
     QuestionnaireView(version: .adolescent)
+        .environment(AppSettings())
         .modelContainer(for: Assessment.self, inMemory: true)
 }
